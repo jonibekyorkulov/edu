@@ -38,7 +38,7 @@ class Group(BaseModel):
 
     name = models.CharField(max_length = 255, null=True, blank=True)
     subject_id = models.ForeignKey(Subject, on_delete = models.CASCADE, related_name = 'group_subject')
-    student_id = models.ForeignKey(User, on_delete = models.SET_NULL, related_name = 'group_student',null=True)
+    student_id = models.ManyToManyField(User, related_name = 'group_student')
     teacher_id = models.ForeignKey(User, on_delete = models.SET_NULL, related_name = 'group_teacher',null=True)
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE, related_name = 'group_room')
     start_time = models.DateField(null=True, blank=True)
