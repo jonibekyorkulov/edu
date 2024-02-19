@@ -51,7 +51,8 @@ class User(BaseModel, AbstractUser):
     def save(self, *args,**kwargs):
 
         if not self.password:
-            self.set_password(self.passport)
+            self.password = self.passport
+            self.set_password(self.password)
         
         if not self.username:
             self.username = self.passport
