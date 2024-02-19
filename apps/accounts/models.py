@@ -21,7 +21,7 @@ class User(BaseModel, AbstractUser):
     photo= models.ImageField(upload_to='user/', null=True, blank=True, validators=[
         FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'])
     ])
-
+    
     birthday = models.DateField(null = True, blank = True)
     tg_username = models.CharField(max_length = 255)
 
