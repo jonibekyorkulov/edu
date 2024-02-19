@@ -1,7 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
-from edu.apps.structure.models import Tasks
+from rest_framework.response import Response
+from apps.structure.models import Tasks
 from .serializers import TaskSerializer
+from rest_framework import status
 
 
 class TaskCreateApiView(APIView):
@@ -20,3 +22,4 @@ class TaskCreateApiView(APIView):
                 "status": True,
                 "message": f"{request.user.username} task yaratdingiz",
             }
+            return Response(data=data_task, status=status.HTTP_201_CREATED)
