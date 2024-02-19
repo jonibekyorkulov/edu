@@ -16,7 +16,7 @@ class LoginSerializer(TokenObtainPairSerializer):
     def auth_validate(self, data):
         password = data.get('password')
         username = data.get('username')
-        print(f"{username}\n{password}")
+        # print(f"{username}\n{password}")
         
 
         user_kwargs = {
