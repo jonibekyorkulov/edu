@@ -86,8 +86,8 @@ class Attendance(BaseModel):
     def __str__(self) -> str:
         return self.student_id.full_name
 
-class Tasks(BaseModel):
 
+class Tasks(BaseModel):
     name = models.CharField(max_length = 255, null=True, blank=True)
     grade = models.IntegerField(default=0)
     deadline = models.DateTimeField()
