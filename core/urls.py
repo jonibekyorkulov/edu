@@ -41,7 +41,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/accounts/', include('apps.accounts.urls')),
     path("swagger/", schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui')
-
 ]
 
 if settings.DEBUG:
