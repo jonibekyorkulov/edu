@@ -26,7 +26,7 @@ class Week(BaseModel):
 class Subject(BaseModel):
 
     name = models.CharField(max_length = 255, null=True, blank=True)
-    
+     
     duration = models.IntegerField(default=0)
 
     def __str__(self) -> str:
