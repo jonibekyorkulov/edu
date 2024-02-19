@@ -40,9 +40,18 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/accounts/', include('apps.accounts.urls')),
-    path('api/v1/qudrat/', include('api.qudrat.urls')),
-    path("swagger/", schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui')
-
+    path("swagger/", schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path("sohib/", include('api.sohib.urls')),
+    path("qudrat/", include('api.qudrat.urls')),
+    path("abbos/", include('api.abbos.urls')),
+    path("abdulaziz/", include('api.abdulaziz.urls')),
+    path("aligarx/", include('api.aligarx.urls')),
+    path("bekzod/", include('api.bekzod.urls')),
+    path("javlonbek/", include('api.javlonbek.urls')),
+    path("mehroj/", include('api.mehroj.urls')),
+    path("samandar/", include('api.samandar.urls')),
+    path("sardor/", include('api.sardor.urls')),
+    path("shahlo/", include('api.shahlo.urls')),
 ]
 
 if settings.DEBUG:
