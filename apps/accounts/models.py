@@ -7,15 +7,15 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # Create your models here.
 class User(BaseModel, AbstractUser):
-    role=models.CharField(null=True, blank=True, choices=UserRol.choices())
+    role=models.CharField(max_length=255, null=True, blank=True, choices=UserRol.choices())
     first_name=models.CharField(max_length=255, null=True, blank=True)
     last_name=models.CharField(max_length=255, null=True, blank=True)
     middle_name=models.CharField(max_length=255, null=True, blank=True)
     phone_namber=models.CharField(max_length=255, null=True, blank=True)
     passport = models.CharField(max_length=255, null=True, blank=True)
     jshir = models.BigIntegerField(null=True, blank=True)
-    gender = models.CharField(null=True, blank=True, choices=Gender.choices())
-    address = models.CharField(null=True, blank=True)
+    gender = models.CharField(max_length=255, null=True, blank=True, choices=Gender.choices())
+    address = models.CharField(max_length=255, null=True, blank=True)
     region = models.ForeignKey(RegionModel, on_delete = models.SET_NULL, null=True, blank=True, related_name = 'user_region')
     district = models.ForeignKey(RegionModel, on_delete = models.SET_NULL, null=True, blank=True, related_name = 'user_district')
     photo= models.ImageField(upload_to='user/', null=True, blank=True, validators=[
@@ -49,9 +49,9 @@ class User(BaseModel, AbstractUser):
         
 
     def save(self, *args,**kwargs):
-
         if not self.password:
-            self.password = self.set_password(self.passport)
+            self.password = self.passport
+            self.set_password(self.password)
         
         if not self.username:
             self.username = self.passport
