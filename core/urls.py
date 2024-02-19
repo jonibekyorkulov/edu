@@ -40,6 +40,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/accounts/', include('apps.accounts.urls')),
+    path('api/v1/qudrat/', include('api.qudrat.urls')),
     path("swagger/", schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui')
 
 ]
