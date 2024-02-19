@@ -1,6 +1,6 @@
 from django.urls import path, include
-from .views import GroupGetRoomView
+from .views import GetTable
 
 urlpatterns = [
-    path("group_get_room/", GroupGetRoomView.as_view())
+    path("get_table/", GetTable.as_view())
 ]
