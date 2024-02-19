@@ -43,7 +43,7 @@ class Group(BaseModel):
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE, related_name = 'group_room')
     start_time = models.DateField(null=True, blank=True)
     end_time = models.DateField(null=True, blank=True)
-    week_id = models.ForeignKey(Week, on_delete = models.SET_NULL, related_name = 'group_week', null=True)
+    week_id = models.ManyToManyField(Week, related_name = 'group_week',blank=True)
     lesson_start = models.TimeField(null=True, blank=True)
     lesson_end = models.TimeField(null=True, blank=True)
 
