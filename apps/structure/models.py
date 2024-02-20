@@ -125,7 +125,9 @@ class Payment(BaseModel):
 # ###########################3
 class Test(BaseModel):  
     group = models.ManyToManyField(Group, blank=True, related_name='test_group')
-    file = models.FileField(upload_to='test_file')
+    file = models.FileField(upload_to='test_file', validators=[
+        FileExtensionValidator(allowed_extensions=['xlsx', 'xls', 'csv'])
+    ])
     time = models.TimeField(null=True, blank=True)
 
     def str(self):
