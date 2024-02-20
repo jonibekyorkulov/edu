@@ -1,11 +1,44 @@
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import GroupGetRoomSerializer
-from apps.structure.models import Group
+from .serializers import GroupGetRoomSerializer, PaymentSerializer
+from apps.structure.models import Group, Payment
 from apps.accounts.models import User
 from django.shortcuts import get_object_or_404
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas 
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
 
+def pdf_gen(user, serializer):
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    c.setTitle("Shartnoma")
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    # textob.setTextTransform(1, 1, 0, 0, 0, 1)
+    textob.setFont('Helvetica', 24)
+    # textob.setHorizScale()
+    textob.textLine("Shartnoma")
+    textob.setFont('Helvetica', 14)
+    textob.textLine(f"Talaba: {user.full_name}")
+    textob.textLine(f"====================================")
+    for obj in serializer.data:
+        textob.textLines(f"\n"*2)
+        textob.textLine(f"Sana: {obj['date']}")
+        textob.textLine(f"Summa: {str(obj['summa'])}  so'm")
+        textob.textLine(f"Izoh: {obj['comment']}")
+        textob.textLines(f"\n"*2)
+        textob.textLine(f"====================================")
+
+    
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+
+    return buf
 
 class GetTable(APIView):
     permission_classes = (AllowAny, )
@@ -40,3 +73,21 @@ class GetTable(APIView):
             }
             return Response(data)
         return Response({"status":False})
+
+class GetPayment(APIView):
+    permission_classes = (AllowAny, )
+    def get(self, request):
+        uuid = request.data.get('uuid')
+        student = get_object_or_404(User, uuid=uuid)
+        if student.role != 'student':
+            return Response({'status':False})
+        payments = student.payment_student_id
+        serializer = PaymentSerializer(instance=payments, many=True)
+
+        # data = {
+        #     'status':True,
+        #     'data' : serializer.data
+        # }
+        # return Response(data)
+        return FileResponse(pdf_gen(student, serializer), as_attachment=True, filename="shartnoma.pdf")
+
