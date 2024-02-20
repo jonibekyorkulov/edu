@@ -1,8 +1,9 @@
 from rest_framework import serializers
+from apps.structure.models import Group
 
 
-class GroupGetRoomSerializer(serializers.Serializer):
-    group_id = serializers.UUIDField(required = True)
-    room_id = serializers.UUIDField(required = True)
-    start_time = serializers.TimeField(required = True)
-    end_time = serializers.TimeField(required = True)
+class GroupGetRoomSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Group
+        fields = ('name', 'subject_id', 'week_id', 'lesson_start', 'lesson_end')
