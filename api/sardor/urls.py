@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import QuestionsApiView
+from .views import UploadTestApiview ,QuestionsApiView
 
 urlpatterns = [
-    path('questions/', QuestionsApiView.as_view())
+    path('upload-test/', UploadTestApiview.as_view()),
+    path('questions/', QuestionsApiView.as_view()),
+
     
 ]
