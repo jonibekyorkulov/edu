@@ -49,9 +49,12 @@ class User(BaseModel, AbstractUser):
         
 
     def save(self, *args,**kwargs):
+        
+        print(self.password)
         if not self.password:
             self.password = self.passport
-            self.set_password(self.password)
+        print(self.password)  
+        self.set_password(self.password)
         
         if not self.username:
             self.username = self.passport

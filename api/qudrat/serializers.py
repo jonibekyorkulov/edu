@@ -7,7 +7,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False)
     class Meta:
         model = User
-        fields = '__all__'
+        exclude = ('is_active', )
+        
     
     def validate_passport(self, value):
         if value:
@@ -28,13 +29,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
         
     def validate_jshir(self, value):
         if value:
-            if value.isdigit():
+            if type(value)!=int:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR isn't in number"
                 }
                 raise ValidationError(data)  
-            if len(value) != 14:
+            if len(str(value)) != 14:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR is wrong"
