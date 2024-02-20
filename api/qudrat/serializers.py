@@ -28,17 +28,18 @@ class UserCreateSerializer(serializers.ModelSerializer):
         
     def validate_jshir(self, value):
         if value:
-            if value.isdigit():
+            if type(value)!=int:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR isn't in number"
                 }
                 raise ValidationError(data)  
-            if len(value) != 14:
+            if len(str(value)) != 14:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR is wrong"
-                } 
+                }
+
         
     def create(self, validated_data):
         user = super(UserCreateSerializer, self).create(validated_data)
