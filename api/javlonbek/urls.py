@@ -3,5 +3,5 @@ from .views import AttendanceView
 
 
 urlpatterns = [
-    path('attendance/<int:student_id>/<int:lesson_id>/', AttendanceView.as_view(), name='Attendance')
+    path('att/<uuid:uuid>/', AttendanceView.as_view() , name='attendance')
 ]

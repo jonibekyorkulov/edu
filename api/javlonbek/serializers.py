@@ -9,11 +9,10 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AttendanceSerializer(serializers.ModelSerializer):
-    lesson = LessonSerializer()
 
     class Meta:
         model = Attendance
-        fields = ['lesson_id', 'status']
+        fields = '__all__'
 
 
 
