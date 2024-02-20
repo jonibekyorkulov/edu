@@ -122,38 +122,38 @@ class Payment(BaseModel):
         return self.student_id.full_name
 
 
-###########################3
-class Test(BaseModel):  
-    group = models.ManyToManyField(Group, blank=True, related_name='test_group')
-    file = models.FileField(upload_to='test_file')
-    time = models.TimeField(null=True, blank=True)
+# ###########################3
+# class Test(BaseModel):  
+#     group = models.ManyToManyField(Group, blank=True, related_name='test_group')
+#     file = models.FileField(upload_to='test_file')
+#     time = models.TimeField(null=True, blank=True)
 
-    def str(self):
-        return f"Test ID{self.id} | {self.task.name}"
+#     def str(self):
+#         return f"Test ID{self.id} | {self.task.name}"
 
 
-class TestQuestion(BaseModel):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True, blank=True, related_name='test_question')
-    question = models.TextField(null=True, blank=True)
+# class TestQuestion(BaseModel):
+#     test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True, blank=True, related_name='test_question')
+#     question = models.TextField(null=True, blank=True)
 
-    def str(self):
-        return f"{self.id}| {self.test} | {self.question}"
+#     def str(self):
+#         return f"{self.id}| {self.test} | {self.question}"
 
-class TestAnswer(BaseModel):
-    question = models.ForeignKey(TestQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='question_to_answer')
-    answer = models.CharField(max_length = 255, null=True, blank=True)
-    status = models.BooleanField(null=True, blank=True, default=False)
-    def str(self):
-        return f"{self.id}| {self.question} | {self.answer}"
+# class TestAnswer(BaseModel):
+#     question = models.ForeignKey(TestQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='question_to_answer')
+#     answer = models.CharField(max_length = 255, null=True, blank=True)
+#     status = models.BooleanField(null=True, blank=True, default=False)
+#     def str(self):
+#         return f"{self.id}| {self.question} | {self.answer}"
     
 
-class TestResult(BaseModel):
-    test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, blank=True, related_name='test_to_result')
-    student = models.ForeignKey('account.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='student_to_result')
-    grade = models.IntegerField(null=True, blank=True)
+# class TestResult(BaseModel):
+#     test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, blank=True, related_name='test_to_result')
+#     student = models.ForeignKey('accounts.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='student_to_result')
+#     grade = models.IntegerField(null=True, blank=True)
 
-    def str(self):
-        return f"{self.id}| {self.test} | {self.student}"
+#     def str(self):
+#         return f"{self.id}| {self.test} | {self.student}"
     
 
 
