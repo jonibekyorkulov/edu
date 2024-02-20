@@ -151,7 +151,7 @@ class TestAnswer(BaseModel):
 
 class TestResult(BaseModel):
     test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, blank=True, related_name='test_result')
-    student = models.ForeignKey('accounts.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='student_result')
+    student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='student_result')
     grade = models.IntegerField(null=True, blank=True)
 
     def str(self):
