@@ -131,23 +131,27 @@ class Test(BaseModel):
     ])
     time = models.TimeField(null=True, blank=True)
 
-    def str(self):
+    def __str__(self) -> str:
         return f"Test ID{self.id}"
+        
 
 
 class TestQuestion(BaseModel):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True, blank=True, related_name='test_question')
     question = models.TextField(null=True, blank=True)
 
-    def str(self):
+    def __str__(self) -> str:
         return f"{self.id}| {self.test} | {self.question}"
+        
 
 class TestAnswer(BaseModel):
     question = models.ForeignKey(TestQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='question_answer')
     answer = models.CharField(max_length = 255, null=True, blank=True)
     status = models.BooleanField(null=True, blank=True, default=False)
-    def str(self):
+    
+    def __str__(self) -> str:
         return f"{self.id}| {self.question} | {self.answer}"
+        
     
 
 class TestResult(BaseModel):
@@ -155,7 +159,7 @@ class TestResult(BaseModel):
     student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='student_result')
     grade = models.IntegerField(null=True, blank=True)
 
-    def str(self):
+    def __str__(self) -> str:
         return f"{self.id}| {self.test} | {self.student}"
     
 

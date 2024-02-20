@@ -14,19 +14,20 @@ class UploadTestApiview(CreateAPIView):
     
     # def perform_create(self, serializer):
     #     serializer.save(user = self.request.user)
-    def post(self, request, data):
-        print(request)
-        serializer = self.serializer_class(data = request.data, many=True)
-
-        if serializer.is_valid(raise_exception=True):
-            # Test.objects.create(user = request.user)
-            print('1111111111111111111111111111111111')
-            serializer.save(user = request.user)
-            data = {
-                "status" : True,
-                "message" : "Test created",
-            }
-            return Response(data)
+    # def post(self, request):
+    #     print(request.data.get('group'))
+    #     serializer = self.serializer_class(data = request.data, many=True)
+        
+    #     if serializer.is_valid(raise_exception=True):
+    #         # Test.objects.create(user = request.user)
+    #         print(serializer.validated_data['tester'])
+    #         print('1111111111111111111111111111111111')
+    #         serializer.save(user = request.user)
+    #         data = {
+    #             "status" : True,
+    #             "message" : "Test created",
+    #         }
+    #         return Response(data)
 
         
         
