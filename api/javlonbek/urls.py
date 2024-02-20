@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import AttendanceView
+from .views import AttendanceView, GradeAPIView
 
 
 urlpatterns = [
-    path('att/<uuid:uuid>/', AttendanceView.as_view() , name='attendance')
+    path('attendance/<uuid:uuid>/', AttendanceView.as_view() , name='attendance_student'), 
+    path('grade/<uuid:uuid>/', GradeAPIView.as_view() , name='grade_student'), 
+
+
 ]
