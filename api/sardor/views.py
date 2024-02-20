@@ -1,31 +1,29 @@
 from rest_framework.views import APIView
 from apps.structure.models import Test, TestQuestion, TestAnswer, TestResult
 from .serializers import UploadTestSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+from rest_framework.generics import CreateAPIView
 
 
-class UploadTestApiview(APIView):
+class UploadTestApiview(CreateAPIView):
     serializer_class = UploadTestSerializer
-    permission_classes = (AllowAny, )
-    def post(self, requst):
-        serializer = self.serializer_class(data = requst.data)
-        try:
-            if serializer.is_valid(raise_exception=True):
-                serializer.save(user = requst.user)
-                data = {
-                    "status" : True,
-                    "message" : "Comment created",
-                    "your_upload_test" : serializer.data
-                }
-                return Response(data)
-        except Exception as e:
+    permission_classes = (IsAuthenticated, )
+    
+    # def perform_create(self, serializer):
+    #     serializer.save(user = self.request.user)
+    def post(self, request):
+        serializer = self.serializer_class(data = request.data, many=True)
+
+        if serializer.is_valid(raise_exception=True):
+            # Test.objects.create(user = request.user)
+            serializer.save(user = request.user)
             data = {
-                    "status" : True,
-                    "message" : f"{e}",
-                }
-            raise ValidationError(data)
+                "status" : True,
+                "message" : "Test created",
+            }
+            return Response(data)
 
         
         
