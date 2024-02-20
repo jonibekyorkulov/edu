@@ -124,6 +124,7 @@ class Payment(BaseModel):
 
 # ###########################3
 class Test(BaseModel):  
+    tester = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='teacher_test')
     group = models.ManyToManyField(Group, blank=True, related_name='test_group')
     file = models.FileField(upload_to='test_file', validators=[
         FileExtensionValidator(allowed_extensions=['xlsx', 'xls', 'csv'])
@@ -142,7 +143,7 @@ class TestQuestion(BaseModel):
         return f"{self.id}| {self.test} | {self.question}"
 
 class TestAnswer(BaseModel):
-    question = models.ForeignKey(TestQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='question_nswer')
+    question = models.ForeignKey(TestQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='question_answer')
     answer = models.CharField(max_length = 255, null=True, blank=True)
     status = models.BooleanField(null=True, blank=True, default=False)
     def str(self):
