@@ -29,6 +29,9 @@ class RoomSerializer(serializers.ModelSerializer):
                 'message' : 'Room already exists'
             } 
             raise ValidationError(data)
+        
+
+
 
 
         
