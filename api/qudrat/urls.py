@@ -1,6 +1,8 @@
 
 from django.urls import path
-from .views import UserCreateApiView
+from .views import (
+    UserCreateApiView,
+)
 
 urlpatterns = [
     path('create-user/', UserCreateApiView.as_view())

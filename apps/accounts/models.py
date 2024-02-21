@@ -23,7 +23,7 @@ class User(BaseModel, AbstractUser):
     ])
 
     birthday = models.DateField(null = True, blank = True)
-    tg_username = models.CharField(max_length = 255)
+    tg_username = models.CharField(max_length = 255, null=True, blank=True)
 
 
     @property
@@ -50,11 +50,9 @@ class User(BaseModel, AbstractUser):
 
     def save(self, *args,**kwargs):
         
-        print(self.password)
         if not self.password:
-            self.password = self.passport
-        print(self.password)  
-        self.set_password(self.password)
+            self.password = self.passport  
+            self.set_password(self.password)
         
         if not self.username:
             self.username = self.passport

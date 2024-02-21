@@ -1,13 +1,29 @@
 from rest_framework import serializers
 from apps.accounts.models import User
 from rest_framework.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False)
+    username = serializers.CharField(required=False)    
     class Meta:
         model = User
-        exclude = ('is_active', )
+        fields = (
+            'first_name',
+            'last_name',
+            'middle_name',
+            'role',
+            'phone_namber',
+            'passport',
+            'jshir',
+            'gender',
+            'address',
+            'region',
+            'district',
+            'birthday',
+            'photo'
+        )
         
     
     def validate_passport(self, value):
@@ -45,6 +61,28 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user = super(UserCreateSerializer, self).create(validated_data)
         user.save()
         return user
+    
+
+class UserUpdateSerializer(serializers.Serializer):
+    first_name = serializers.CharField(write_only = True, required = False)
+    last_name = serializers.CharField(write_only = True, required = False)
+    middle_name = serializers.CharField(write_only = True, required = False)
+    role = serializers.CharField(write_only = True, required = False)
+    phone_namber = serializers.CharField(write_only = True, required = False)
+    passport = serializers.CharField(write_only = True, required = False)
+    jshir = serializers.CharField(write_only = True, required = False)
+    gender = serializers.CharField(write_only = True, required = False)
+    address = serializers.CharField(write_only = True, required = False)
+    region = serializers.CharField(write_only = True, required = False)
+    district = serializers.CharField(write_only = True, required = False)
+    birthday = serializers.DateField(write_only = True, required = False)
+    photo = serializers.ImageField(required = False, validators=[
+        FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'])
+    ])
+    
+    def update(self, instance, validated_data):
+        super().update(instance, validated_data)
+    
     
     
    
