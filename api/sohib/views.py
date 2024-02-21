@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.structure.permission import IsAdmin
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView
 from .serializers import GroupGetRoomSerializer, PaymentSerializer, AttendanceSerializer
 from apps.structure.models import Group, Attendance
 from apps.accounts.models import User
@@ -99,7 +99,21 @@ class GetAttendance(ListAPIView):
     def get_queryset(self):
         group = get_object_or_404(Group, uuid=self.request.data.get('uuid'))
         students = group.student_id.all()
-        queryset = {}
+        queryset = []
         for student in students:
             queryset += Attendance.objects.filter(student_id = student)
+        return queryset
+
+class UpdateAttendance(UpdateAPIView):
+    permission_classes = (IsAdmin, )
+    serializer_class = AttendanceSerializer
+    queryset = Attendance.objects.all()
+
+class GetStudentAttendance(ListAPIView):
+    permission_classes = (IsAdmin, )
+    serializer_class = AttendanceSerializer
+    def get_queryset(self):
+        student = self.request.data['uuid']
+        student = get_object_or_404(User, uuid=student)
+        queryset = Attendance.objects.filter(student_id = student)
         return queryset
