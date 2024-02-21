@@ -5,6 +5,8 @@ from rest_framework.exceptions import ValidationError
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False)
+    username = serializers.CharField(required=False)
+    
     class Meta:
         model = User
         fields = '__all__'
