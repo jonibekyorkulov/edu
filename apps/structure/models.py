@@ -49,7 +49,7 @@ class Group(BaseModel):
 
     def __str__(self) -> str:
         return self.name
-)
+
 
 class Lesson(BaseModel):
 
