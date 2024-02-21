@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateRoomView
+from .views import CreateRoomView, CreateGroupView
 
 
 # urlpatterns =[
@@ -10,6 +10,7 @@ from .views import CreateRoomView
 # ]
 ###### XONA YARATISH 
 urlpatterns =[
-    path('create_room/',CreateRoomView.as_view())
+    path('create_room/', CreateRoomView.as_view()),
+    path('create_group/',CreateGroupView.as_view()),
 
 ]

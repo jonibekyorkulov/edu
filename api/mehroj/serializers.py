@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from apps.accounts.models import User,UserRol
-from apps.structure.models import Room
+from apps.structure.models import Room,Week,Group
 from rest_framework.response import Response
 from rest_framework.validators import ValidationError
 
@@ -29,8 +29,26 @@ class RoomSerializer(serializers.ModelSerializer):
                 'message' : 'Room already exists'
             } 
             raise ValidationError(data)
+        return attrs
         
 
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = '__all__'
+    
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        teacher = attrs['teacher_id']
+        
+
+        a = Group.objects.filter(teacher_id = teacher)
+        
+
+
+        
+
+            
 
 
 

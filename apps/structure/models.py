@@ -51,7 +51,7 @@ class Group(BaseModel):
         return self.name
 
     def save(self, *args,**kwargs):
-        self.end_time = self.start_time + timedelta(months = self.subject_id.duration)
+        # self.end_time = self.start_time + timedelta(months = self.subject_id.duration)
         super(Group, self).save(*args,**kwargs)
 
 class Lesson(BaseModel):
