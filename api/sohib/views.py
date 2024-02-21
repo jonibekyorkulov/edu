@@ -1,8 +1,9 @@
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import GroupGetRoomSerializer, PaymentSerializer
-from apps.structure.models import Group, Payment
+from apps.structure.permission import IsAdmin
+from rest_framework.generics import ListAPIView
+from .serializers import GroupGetRoomSerializer, PaymentSerializer, AttendanceSerializer
+from apps.structure.models import Group, Attendance
 from apps.accounts.models import User
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse
@@ -41,7 +42,7 @@ def pdf_gen(user, serializer):
     return buf
 
 class GetTable(APIView):
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAdmin, )
     def get(self, request):
         uuid = request.data.get('uuid')
         type = request.data.get('type')
@@ -75,7 +76,7 @@ class GetTable(APIView):
         return Response({"status":False})
 
 class GetPayment(APIView):
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAdmin, )
     def get(self, request):
         uuid = request.data.get('uuid')
         student = get_object_or_404(User, uuid=uuid)
@@ -91,3 +92,14 @@ class GetPayment(APIView):
         # return Response(data)
         return FileResponse(pdf_gen(student, serializer), as_attachment=True, filename="shartnoma.pdf")
 
+class GetAttendance(ListAPIView):
+    permission_classes = (IsAdmin, )
+    serializer_class = AttendanceSerializer
+
+    def get_queryset(self):
+        group = get_object_or_404(Group, uuid=self.request.data.get('uuid'))
+        students = group.student_id.all()
+        queryset = {}
+        for student in students:
+            queryset += Attendance.objects.filter(student_id = student)
+        return queryset
