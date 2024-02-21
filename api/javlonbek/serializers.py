@@ -1,5 +1,6 @@
-from apps.structure.models import Attendance, Task_submitions
+from apps.structure.models import Attendance, Task_submitions, LessonSource
 from rest_framework import serializers
+
 
 class AttendanceSerializer(serializers.ModelSerializer):
 
@@ -15,4 +16,8 @@ class GradeSerializers(serializers.ModelSerializer):
         fields = ['task_id' , 'student_id' , 'grade']
 
 
+class LessonSourceSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = LessonSource
+        fields ='__all__'
