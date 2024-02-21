@@ -1,14 +1,14 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from apps.structure.models import Tasks
 from .serializers import TaskSerializer
 from rest_framework import status, exceptions
-
+from django.db.models import Q
 
 class TaskCreateApiView(APIView):
     permission_classes = [
-        AllowAny,
+        IsAuthenticated,
     ]
     queryset = Tasks.objects.all()
     serializer_class = TaskSerializer
@@ -28,3 +28,23 @@ class TaskCreateApiView(APIView):
                 "message": f"{request.user.username} task yaratdingiz",
             }
             return Response(data=data_task, status=status.HTTP_201_CREATED)
+
+
+class TaskListApiView(APIView):
+    permission_classes = (AllowAny, )
+    def get(self, request):
+        try:
+            user = request.user.uuid
+            tasks = Tasks.objects.filter(Q(teacher_id=user) | Q(group_id__student_id = user))
+            serializer = TaskSerializer(tasks, many=True)
+            data = {
+                "status": True,
+                "data": serializer.data
+            }
+            return Response(data=data)
+        except Exception as e:
+            error = {
+                "status": False,
+                "message": f"{e} shunday xatolik"
+            }
+            raise exceptions.ValidationError(error)
