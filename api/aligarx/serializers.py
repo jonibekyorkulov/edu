@@ -2,14 +2,14 @@ from rest_framework import serializers
 from django.core.validators import FileExtensionValidator
 
 class TeacherProfilGetSerializers(serializers):
-    role = serializers.CharField(max_length=255, null=True, blank=True, choices=UserRol.choices())
+    role = serializers.CharField(max_length=255, null=True, blank=True)
     first_name = serializers.CharField(max_length=255, null=True, blank=True)
     last_name = serializers.CharField(max_length=255, null=True, blank=True)
     middle_name = serializers.CharField(max_length=255, null=True, blank=True)
     phone_namber = serializers.CharField(max_length=255, null=True, blank=True)
     passport = serializers.CharField(max_length=255, null=True, blank=True)
     jshir = serializers.BigIntegerField(null=True, blank=True)
-    gender = serializers.CharField(max_length=255, null=True, blank=True, choices=Gender.choices())
+    gender = serializers.CharField(max_length=255, null=True, blank=True)
     address = serializers.CharField(max_length=255, null=True, blank=True)
     region = serializers.CharField(max_length=255, null=True, blank=True)
     district = serializers.CharField(max_length=255, null=True, blank=True)
