@@ -1,6 +1,7 @@
-from rest_framework import serializers
-from apps.structure.models import Tasks
+from rest_framework import serializers, exceptions
+from apps.structure.models import Tasks, Attendance, Group
 from rest_framework.exceptions import ValidationError
+from django.db.models import Q
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,4 +21,12 @@ class TaskSerializer(serializers.ModelSerializer):
             }
             raise ValidationError(data)
         return data
+
+class AttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attendance
+        fields = "__all__"
+    
+    def validate(self, data):
         
+        return data
