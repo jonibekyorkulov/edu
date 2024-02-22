@@ -29,7 +29,7 @@ class IsAdmin(permissions.BasePermission):
                 error = {
                     'detail': f"DoesNotExist"}
                 raise ValidationError(error)
-        return False
+        return True
 
 
 class IsTeacher(permissions.BasePermission):
@@ -56,7 +56,7 @@ class IsTeacher(permissions.BasePermission):
                 error = {
                     'detail': f"DoesNotExist"}
                 raise ValidationError(error)
-        return False
+        return True
 
 
 class IsStudent(permissions.BasePermission):
@@ -83,7 +83,7 @@ class IsStudent(permissions.BasePermission):
                 error = {
                     'detail': f"DoesNotExist"}
                 raise ValidationError(error)
-        return False
+        return True
 
 
 class IsAuthenticated(permissions.BasePermission):

@@ -1,5 +1,5 @@
 from rest_framework import serializers, exceptions
-from apps.structure.models import Tasks, Attendance, Group
+from apps.structure.models import Tasks, Attendance, Group, Task_submitions
 from rest_framework.exceptions import ValidationError
 from django.db.models import Q
 
@@ -28,5 +28,16 @@ class AttendanceSerializer(serializers.ModelSerializer):
         fields = "__all__"
     
     def validate(self, data):
-        
+        group = Group.objects.filter(student_id=data.get("student_id"), lesson_group=data.get("lesson_id")).first()
+        if group is None:
+            error = {
+                "status": False,
+                "message": "Bu student boshqa gruppadan"
+            }
+            raise exceptions.ValidationError(error)
         return data
+
+class GradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task_submitions
+        fields = ['grade', "task_id", "student_id"]

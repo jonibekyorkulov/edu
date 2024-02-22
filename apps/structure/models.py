@@ -95,7 +95,7 @@ class Tasks(BaseModel):
     group_id = models.ForeignKey(Group, on_delete = models.CASCADE, related_name = 'tasks_group_id')
     file = models.FileField(upload_to='tasks/')
     
-
+    
     def __str__(self) -> str:
         return self.name
 
