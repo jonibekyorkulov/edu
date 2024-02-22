@@ -23,7 +23,7 @@ class User(BaseModel, AbstractUser):
     ])
 
     birthday = models.DateField(null = True, blank = True)
-    tg_username = models.CharField(max_length = 255)
+    tg_username = models.CharField(max_length = 255, blank = True)
 
 
     @property
