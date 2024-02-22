@@ -121,9 +121,43 @@ class Payment(BaseModel):
 
     def __str__(self) -> str:
         return self.student_id.full_name
-    
 
 
+# ###########################3
+class Test(BaseModel):  
+    group = models.ManyToManyField(Group, blank=True, related_name='test_group')
+    file = models.FileField(upload_to='test_file', validators=[
+        FileExtensionValidator(allowed_extensions=['xlsx', 'xls', 'csv'])
+    ])
+    time = models.TimeField(null=True, blank=True)
+
+    def str(self):
+        return f"Test ID{self.id}"
+
+
+class TestQuestion(BaseModel):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True, blank=True, related_name='test_question')
+    question = models.TextField(null=True, blank=True)
+
+    def str(self):
+        return f"{self.id}| {self.test} | {self.question}"
+
+class TestAnswer(BaseModel):
+    question = models.ForeignKey(TestQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='question_nswer')
+    answer = models.CharField(max_length = 255, null=True, blank=True)
+    status = models.BooleanField(null=True, blank=True, default=False)
+    def str(self):
+        return f"{self.id}| {self.question} | {self.answer}"
     
+
+class TestResult(BaseModel):
+    test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, blank=True, related_name='test_result')
+    student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='student_result')
+    grade = models.IntegerField(null=True, blank=True)
+
+    def str(self):
+        return f"{self.id}| {self.test} | {self.student}"
+    
+
 
 
