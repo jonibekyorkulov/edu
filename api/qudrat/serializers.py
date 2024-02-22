@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.accounts.models import User
+from apps.accounts.models import User, UserFile
 from rest_framework.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 
@@ -62,6 +62,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user = super(UserCreateSerializer, self).create(validated_data)
         user.save()
         return user
+    
+    
+class UserCreateFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFile
+        fields = ('file', 'uuid')
+
     
 
     

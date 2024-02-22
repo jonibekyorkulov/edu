@@ -63,3 +63,12 @@ class User(BaseModel, AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+
+class UserFile(BaseModel):
+    file = models.FileField(upload_to='user_file/', null = True, blank=True,  validators=[
+        FileExtensionValidator(allowed_extensions=['xlsx', 'xls', 'csv'])
+        ])
+    
+    def __str__(self) -> str:
+        return f'{self.uuid}'
