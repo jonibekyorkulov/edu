@@ -18,16 +18,10 @@ class LoginSerializer(TokenObtainPairSerializer):
         username = data.get('username')
 
 
-        # print(f"{username}\n{password}")
-
-        
-
         user_kwargs = {
             self.username_field: username,
             "password": password
         }
-
-
 
         user = authenticate(**user_kwargs)
         if user is not None:
