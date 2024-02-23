@@ -1,5 +1,6 @@
 
 from django.urls import path
+
 from .views import (
     UserCreateApiView,
     UserUpdateApiView, 
@@ -11,6 +12,7 @@ from .views import (
     SubjectRetrieveApiView,
     SubjectDeleteApiView
 )
+
 
 urlpatterns = [
     path('create-user/', UserCreateApiView.as_view()),

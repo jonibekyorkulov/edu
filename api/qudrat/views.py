@@ -1,3 +1,4 @@
+
 from apps.accounts.models import User, UserFile
 from apps.base.models import RegionModel
 from apps.structure.models import Subject
@@ -11,9 +12,11 @@ from rest_framework.response import Response
 import pandas as pd
 from rest_framework.exceptions import ValidationError
 
+
 class UserCreateApiView(CreateAPIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [IsAuthenticated, ]
     serializer_class = UserCreateSerializer
+
     queryset = User.objects.all()
     
 
@@ -170,4 +173,4 @@ class SubjectDeleteApiView(APIView):
         return Response(data)   
    
 
-    
+

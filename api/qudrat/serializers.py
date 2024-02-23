@@ -2,10 +2,10 @@ from rest_framework import serializers
 from apps.accounts.models import User, UserFile
 from apps.structure.models import Subject
 from rest_framework.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
+
 
     class Meta:
         model = User
@@ -26,6 +26,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             'photo'
         )
         
+
     
     def validate_passport(self, value):
         if value:
@@ -46,13 +47,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
         
     def validate_jshir(self, value):
         if value:
-            if type(value)!=int:
+            if value.isdigit():
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR isn't in number"
                 }
                 raise ValidationError(data)  
-            if len(str(value)) != 14:
+            if len(value) != 14:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR is wrong"
@@ -64,6 +65,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user.save()
         return user
     
+
     
 class UserCreateFileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -76,7 +78,6 @@ class SubjectSerializer(serializers.ModelSerializer):
         model = Subject
         fields = '__all__'
     
-    
-    
+ 
    
     

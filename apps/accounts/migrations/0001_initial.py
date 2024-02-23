@@ -1,5 +1,4 @@
 
-
 import django.contrib.auth.models
 import django.contrib.auth.validators
 import django.core.validators
@@ -49,7 +48,7 @@ class Migration(migrations.Migration):
                 ('address', models.CharField(blank=True, max_length=255, null=True)),
                 ('photo', models.ImageField(blank=True, null=True, upload_to='user/', validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'])])),
                 ('birthday', models.DateField(blank=True, null=True)),
-                ('tg_username', models.CharField(blank=True, max_length=255, null=True)),
+                ('tg_username', models.CharField(max_length=255)),
                 ('district', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='user_district', to='base.regionmodel')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('region', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='user_region', to='base.regionmodel')),
