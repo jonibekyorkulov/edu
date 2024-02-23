@@ -15,7 +15,7 @@ class IsAdmin(permissions.BasePermission):
         user = request.user
         if user.role == None:
             return False
-        if self.role_method_name == user.role:
+        if self.role_method_name.value == user.role:
             try:
                 token = OutstandingToken.objects.filter(user=user).order_by('-id')[0]
                 block = BlacklistedToken.objects.filter(token=token)
@@ -29,7 +29,7 @@ class IsAdmin(permissions.BasePermission):
                 error = {
                     'detail': f"DoesNotExist"}
                 raise ValidationError(error)
-        return False
+        return True
 
 
 class IsTeacher(permissions.BasePermission):
@@ -42,7 +42,7 @@ class IsTeacher(permissions.BasePermission):
         user = request.user
         if user.role == None:
             return False
-        if self.role_method_name == user.role:
+        if self.role_method_name.value == user.role:
             try:
                 token = OutstandingToken.objects.filter(user=user).order_by('-id')[0]
                 block = BlacklistedToken.objects.filter(token=token)
@@ -56,7 +56,7 @@ class IsTeacher(permissions.BasePermission):
                 error = {
                     'detail': f"DoesNotExist"}
                 raise ValidationError(error)
-        return False
+        return True
 
 
 class IsStudent(permissions.BasePermission):
@@ -69,7 +69,7 @@ class IsStudent(permissions.BasePermission):
         user = request.user
         if user.role == None:
             return False
-        if self.role_method_name == user.role:
+        if self.role_method_name.value == user.role:
             try:
                 token = OutstandingToken.objects.filter(user=user).order_by('-id')[0]
                 block = BlacklistedToken.objects.filter(token=token)
@@ -83,7 +83,7 @@ class IsStudent(permissions.BasePermission):
                 error = {
                     'detail': f"DoesNotExist"}
                 raise ValidationError(error)
-        return False
+        return True
 
 
 class IsAuthenticated(permissions.BasePermission):
