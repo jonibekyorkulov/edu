@@ -2,7 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from apps.structure.models import Tasks, Attendance, Group, Task_submitions
-from .serializers import TaskSerializer, AttendanceSerializer, GradeSerializer
+from .serializers import (
+    TaskSerializer,
+    AttendanceSerializer,
+    GradeSerializer,
+    LessonSerializer,
+)
 from rest_framework import status, exceptions
 from django.db.models import Q
 
@@ -120,3 +125,36 @@ class GradeJudgeApiView(APIView):
                 serializer.save()
                 data = {"status": True, "message": "Baholandi"}
                 return Response(data=data)
+
+
+class LessonCreateApiView(APIView):
+    permission_classes = (IsTeacher,)
+    serializer_class = LessonSerializer
+
+    def post(self, request):
+        front_data = request.data
+        # front_data["teacher"] = str(request.user.uuid)
+        try:
+            group = Group.objects.filter(Q(uuid=front_data.get("group_id")) & Q(teacher_id=request.user.uuid)).first()
+            if group is None:
+                error = {
+                    "status": False,
+                    "message": "Siz yuborgan guruhingizni oqtuvchisi emassiz yo Bunday guruh topilmadi"
+                }
+                raise exceptions.ValidationError(error)
+        except Exception as e:
+            error = {
+                    "status": False,
+                    "message": "Bunday guruh topilmadi"
+                }
+            raise exceptions.ValidationError(error)
+        
+        
+        serializer = self.serializer_class(data=front_data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            response_data = {
+                "status": True,
+                "message": "The lasson has been created"
+            }
+            return Response(data=response_data)
