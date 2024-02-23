@@ -39,7 +39,7 @@ class Group(BaseModel):
     name = models.CharField(max_length = 255, null=True, blank=True)
     subject_id = models.ForeignKey(Subject, on_delete = models.CASCADE, related_name = 'group_subject')
     student_id = models.ManyToManyField(User, related_name = 'group_student')
-    teacher_id = models.ForeignKey(User, on_delete = models.SET_NULL, related_name = 'group_teacher',null=True)
+    teacher_id = models.ForeignKey(User, on_delete = models.SET_NULL, related_name = 'group_teacher', null=True)
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE, related_name = 'group_room')
     start_time = models.DateField(null=True, blank=True)
     end_time = models.DateField(null=True, blank=True)
@@ -50,9 +50,7 @@ class Group(BaseModel):
     def __str__(self) -> str:
         return self.name
 
-    # def save(self, *args,**kwargs):
-    #     self.end_time = self.start_time + timedelta(months = self.subject_id.duration)
-    #     super(Group, self).save(*args,**kwargs)
+
 
 class Lesson(BaseModel):
 
@@ -125,29 +123,37 @@ class Payment(BaseModel):
 
 # ###########################3
 class Test(BaseModel):  
+    tester = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='teacher_test')
     group = models.ManyToManyField(Group, blank=True, related_name='test_group')
     file = models.FileField(upload_to='test_file', validators=[
         FileExtensionValidator(allowed_extensions=['xlsx', 'xls', 'csv'])
     ])
     time = models.TimeField(null=True, blank=True)
 
-    def str(self):
-        return f"Test ID{self.id}"
+    def __str__(self) -> str:
+        return f"Teacher: {self.tester.full_name}   {self.create_date}"
+
+
+
+        
 
 
 class TestQuestion(BaseModel):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True, blank=True, related_name='test_question')
     question = models.TextField(null=True, blank=True)
 
-    def str(self):
-        return f"{self.id}| {self.test} | {self.question}"
+    def __str__(self) -> str:
+        return f"{self.question}"
+        
 
 class TestAnswer(BaseModel):
-    question = models.ForeignKey(TestQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='question_nswer')
+    question = models.ForeignKey(TestQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='question_answer')
     answer = models.CharField(max_length = 255, null=True, blank=True)
     status = models.BooleanField(null=True, blank=True, default=False)
-    def str(self):
-        return f"{self.id}| {self.question} | {self.answer}"
+    
+    def __str__(self) -> str:
+        return f"{self.question} | {self.answer}"
+        
     
 
 class TestResult(BaseModel):
@@ -155,9 +161,10 @@ class TestResult(BaseModel):
     student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='student_result')
     grade = models.IntegerField(null=True, blank=True)
 
-    def str(self):
-        return f"{self.id}| {self.test} | {self.student}"
+    def __str__(self) -> str:
+        return f"{self.test} | {self.student}"
     
 
 
 
+ 
