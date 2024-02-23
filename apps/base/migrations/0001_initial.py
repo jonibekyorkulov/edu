@@ -1,5 +1,4 @@
 
-
 import django.db.models.deletion
 import mptt.fields
 import uuid

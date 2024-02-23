@@ -1,5 +1,4 @@
 
-
 import django.core.validators
 import django.db.models.deletion
 import uuid
@@ -184,8 +183,8 @@ class Migration(migrations.Migration):
                 ('time', models.TimeField(blank=True, null=True)),
                 ('group', models.ManyToManyField(blank=True, related_name='test_group', to='structure.group')),
 
-
                 ('tester', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teacher_test', to=settings.AUTH_USER_MODEL)),
+
 
             ],
             options={
