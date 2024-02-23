@@ -3,7 +3,7 @@ from .models import User, UserFile
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
-    readonly_fields = ('uuid', 'password')
+    readonly_fields = ('uuid', )
     list_display = ['first_name', 'last_name', 'role', 'passport']
     ordering = ['-create_date']
 

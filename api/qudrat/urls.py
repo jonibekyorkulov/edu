@@ -5,7 +5,6 @@ from .views import (
     UserUpdateApiView, 
     UserRetrieveApiView,
     UserDeleteApiView,
-    UserCreateFileApiView,
     WriteUserApiView
 )
 
@@ -14,6 +13,5 @@ urlpatterns = [
     path('update-user/<uuid:pk>/', UserUpdateApiView.as_view()),
     path('retrieve-user/<uuid:pk>/', UserRetrieveApiView.as_view()),
     path('delete/', UserDeleteApiView.as_view()),
-    path('user-create-file/', UserCreateFileApiView.as_view()),
-    path('user-file/<uuid:uuid>/', WriteUserApiView.as_view()),
+    path('user-file/', WriteUserApiView.as_view()),
 ]

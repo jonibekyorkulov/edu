@@ -1,4 +1,5 @@
 from apps.accounts.models import User, UserFile
+from apps.base.models import RegionModel
 from .serializers import UserCreateSerializer, UserCreateFileSerializer
 from rest_framework.generics import CreateAPIView, UpdateAPIView, RetrieveAPIView
 from apps.structure.permission import IsAdmin
@@ -42,31 +43,59 @@ class UserDeleteApiView(APIView):
             'data': "success"
         }
         return Response(data)
-    
-    
-class UserCreateFileApiView(CreateAPIView):
-    serializer_class = UserCreateFileSerializer
-    permission_classes = [IsAdmin, ]
-    queryset = UserFile.objects.all()
-
 
 
 class WriteUserApiView(APIView):
     serializer_class = UserCreateFileSerializer
     permission_classes = [IsAdmin, ]
     
-    def get(self, request, uuid):
-        file = UserFile.objects.filter(uuid = uuid, is_active = True).first()
-        df = pd.read_excel(file.file.path)
+    def post(self, request):
+        file = request.data['file']
+        user_file = UserFile.objects.create(
+            file = file
+        )
+        user_file.save()
+        df = pd.read_excel(file)
         for index, row in df.iterrows():
             passport = row['passport']
             jshir = row['jshir']
+            
+            passport_start = passport[:1]
+            if not passport_start.isalpha():
+                data = {
+                    'status' : False,
+                    'message' : "Your passport isn't starting with alphabetics"
+                }
+                raise ValidationError(data)
+            if len(passport)!=9:
+                data = {
+                    'status' : False,
+                    'message' : "Your passport is wrong"
+                }
+                raise ValidationError(data)
+            
+            if type(jshir)!=int:
+                data = {
+                    'status' : False,
+                    'message' : "Your JSHSHIR isn't in number"
+                }
+                raise ValidationError(data)  
+            if len(str(jshir)) != 14:
+                data = {
+                    'status' : False,
+                    'message' : "Your JSHSHIR is wrong"
+                } 
+                raise ValidationError(data)
+            
             if User.objects.filter(username=passport).exists():
                 data = {
                     'status' : False,
                     'message' : 'This username already exists'
                 }
                 raise ValidationError(data)
+            
+            region = row['region']
+            region = RegionModel.objects.filter(uuid = region).first()
             user = User.objects.create_user(
                 username = passport,
                 first_name = row['first_name'],
@@ -77,7 +106,9 @@ class WriteUserApiView(APIView):
                 passport = passport,
                 jshir = jshir,
                 gender = row['gender'],
-                address = row['address']
+                address = row['address'],
+                password = passport,
+                region = region,
             )
             user.save()
         return Response("salom")    
