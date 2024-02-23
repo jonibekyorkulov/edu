@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from apps.accounts.models import User,UserRol
-from apps.structure.models import Room,Week,Group
+from apps.structure.models import Room,Week,Group,Task_submitions
 from rest_framework.response import Response
 from rest_framework.validators import ValidationError
 
@@ -77,6 +77,16 @@ class GroupSerializer(serializers.ModelSerializer):
         data = attrs
         data['is_active'] = True
         return data 
+    
+
+class BaholarSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = Task_submitions
+        fields = ('__all__' )
+
+
+
 
                 
 
