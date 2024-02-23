@@ -15,7 +15,7 @@ class IsAdmin(permissions.BasePermission):
         user = request.user
         if user.role == None:
             return False
-        if self.role_method_name == user.role:
+        if self.role_method_name.value == user.role:
             try:
                 token = OutstandingToken.objects.filter(user=user).order_by('-id')[0]
                 block = BlacklistedToken.objects.filter(token=token)
@@ -42,7 +42,7 @@ class IsTeacher(permissions.BasePermission):
         user = request.user
         if user.role == None:
             return False
-        if self.role_method_name == user.role:
+        if self.role_method_name.value == user.role:
             try:
                 token = OutstandingToken.objects.filter(user=user).order_by('-id')[0]
                 block = BlacklistedToken.objects.filter(token=token)

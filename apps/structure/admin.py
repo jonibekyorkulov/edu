@@ -27,7 +27,11 @@ admin.site.register(LessonSource)
 admin.site.register(Subject)
 admin.site.register(Week)
 admin.site.register(Attendance)
-admin.site.register(Test)
+
+
+class TestAdmin(admin.ModelAdmin):
+    list_display = ['tester', 'create_date']
+admin.site.register(Test, TestAdmin)
 admin.site.register(TestQuestion)
 admin.site.register(TestAnswer)
 admin.site.register(TestResult)

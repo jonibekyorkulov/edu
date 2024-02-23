@@ -39,7 +39,7 @@ class Group(BaseModel):
     name = models.CharField(max_length = 255, null=True, blank=True)
     subject_id = models.ForeignKey(Subject, on_delete = models.CASCADE, related_name = 'group_subject')
     student_id = models.ManyToManyField(User, related_name = 'group_student')
-    teacher_id = models.ForeignKey(User, on_delete = models.SET_NULL, related_name = 'group_teacher',null=True)
+    teacher_id = models.ForeignKey(User, on_delete = models.SET_NULL, related_name = 'group_teacher', null=True)
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE, related_name = 'group_room')
     start_time = models.DateField(null=True, blank=True)
     end_time = models.DateField(null=True, blank=True)
@@ -51,7 +51,7 @@ class Group(BaseModel):
         return self.name
 
     def save(self, *args,**kwargs):
-        self.end_time = self.start_time + timedelta(months = self.subject_id.duration)
+        # self.end_time = self.start_time + timedelta(months = self.subject_id.duration)
         super(Group, self).save(*args,**kwargs)
 
 class Lesson(BaseModel):
@@ -132,7 +132,7 @@ class Test(BaseModel):
     time = models.TimeField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return f"Test ID{self.id}"
+        return f"Teacher: {self.tester.full_name}   {self.create_date}"
         
 
 
