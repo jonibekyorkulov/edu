@@ -1,4 +1,5 @@
 
+
 import django.core.validators
 import django.db.models.deletion
 import uuid
@@ -187,7 +188,6 @@ class Migration(migrations.Migration):
 
                 ('tester', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teacher_test', to=settings.AUTH_USER_MODEL)),
 
-
             ],
             options={
                 'abstract': False,
@@ -216,6 +216,7 @@ class Migration(migrations.Migration):
                 ('update_date', models.DateTimeField(auto_now=True)),
                 ('answer', models.CharField(blank=True, max_length=255, null=True)),
                 ('status', models.BooleanField(blank=True, default=False, null=True)),
+
 
 
                 ('question', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='question_answer', to='structure.testquestion')),
