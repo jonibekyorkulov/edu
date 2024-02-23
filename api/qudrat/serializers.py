@@ -1,13 +1,32 @@
 from rest_framework import serializers
-from apps.accounts.models import User
+from apps.accounts.models import User, UserFile
+from apps.structure.models import Subject
 from rest_framework.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(required=False)
+    # password = serializers.CharField(required=False)
+    # username = serializers.CharField(required=False)    
     class Meta:
         model = User
-        fields = '__all__'
+        fields = (
+            'uuid',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'role',
+            'phone_namber',
+            'passport',
+            'jshir',
+            'gender',
+            'address',
+            'region',
+            'district',
+            'birthday',
+            'photo'
+        )
+        
     
     def validate_passport(self, value):
         if value:
@@ -28,22 +47,36 @@ class UserCreateSerializer(serializers.ModelSerializer):
         
     def validate_jshir(self, value):
         if value:
-            if value.isdigit():
+            if type(value)!=int:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR isn't in number"
                 }
                 raise ValidationError(data)  
-            if len(value) != 14:
+            if len(str(value)) != 14:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR is wrong"
-                } 
+                }
+
         
     def create(self, validated_data):
         user = super(UserCreateSerializer, self).create(validated_data)
         user.save()
         return user
+    
+    
+class UserCreateFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFile
+        fields = ('file', 'uuid')
+
+    
+class SubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = '__all__'
+    
     
     
    
