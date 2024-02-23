@@ -88,21 +88,7 @@ class AttendanceCreateApiView(APIView):
             return Response(data=data_davomat, status=status.HTTP_201_CREATED)
 
 
-class AttendanceUpdateApiView(APIView):
-    permission_classes = (IsAdmin,)
 
-    def put(self, request):
-        request.data["status"] = False
-        data = request.data
-        attendance = Attendance.objects.filter(
-            student_id=data.get("student_id"), lesson_id=data.get("lesson_id")
-        ).first()
-
-        serializer = AttendanceSerializer(data=data, instance=attendance, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            data = {"status": True, "message": "Sababli qilindi"}
-            return Response(data)
 
 
 class GradeJudgeApiView(APIView):
