@@ -26,7 +26,7 @@ class Week(BaseModel):
 class Subject(BaseModel):
 
     name = models.CharField(max_length = 255, null=True, blank=True)
-    
+     
     duration = models.IntegerField(default=0)
 
     def __str__(self) -> str:
@@ -50,9 +50,7 @@ class Group(BaseModel):
     def __str__(self) -> str:
         return self.name
 
-    def save(self, *args,**kwargs):
-        # self.end_time = self.start_time + timedelta(months = self.subject_id.duration)
-        super(Group, self).save(*args,**kwargs)
+
 
 class Lesson(BaseModel):
 
@@ -91,10 +89,11 @@ class Tasks(BaseModel):
     name = models.CharField(max_length = 255, null=True, blank=True)
     grade = models.IntegerField(default=0)
     deadline = models.DateTimeField()
+    teacher_id = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "tasks_teacher")
     group_id = models.ForeignKey(Group, on_delete = models.CASCADE, related_name = 'tasks_group_id')
     file = models.FileField(upload_to='tasks/')
     
-
+    
     def __str__(self) -> str:
         return self.name
 
