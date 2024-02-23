@@ -1,6 +1,7 @@
 from apps.accounts.models import User, UserFile
 from apps.base.models import RegionModel
-from .serializers import UserCreateSerializer, UserCreateFileSerializer
+from apps.structure.models import Subject
+from .serializers import UserCreateSerializer, UserCreateFileSerializer, SubjectSerializer
 from rest_framework.generics import CreateAPIView, UpdateAPIView, RetrieveAPIView
 from apps.structure.permission import IsAdmin
 from rest_framework.views import APIView
@@ -132,4 +133,41 @@ class WriteUserApiView(APIView):
             'errors' : error_list
         }
         return Response(data)
+   
+   
+class SubjectCreateApiView(CreateAPIView):
+    permission_classes = [IsAdmin, ]
+    serializer_class = SubjectSerializer
+    queryset = Subject.objects.all()   
+   
+
+class SubjectUpdateApiView(UpdateAPIView):
+    permission_classes = [IsAdmin, ]
+    serializer_class = SubjectSerializer
+    queryset = Subject.objects.all()
+    http_method_names = ['put', 'patch']   
+   
+
+class SubjectRetrieveApiView(RetrieveAPIView):
+    permission_classes = [IsAdmin, ]
+    serializer_class = SubjectSerializer
+    queryset = Subject.objects.all() 
+    
+
+class SubjectDeleteApiView(APIView):
+    permission_classes = [IsAdmin, ]
+    serializer_class = SubjectSerializer
+    
+    def delete(self, request):
+        user = request.data.get('uuid')
+        subject = get_object_or_404(Subject, uuid=user)
+        subject.is_active = False
+        subject.save()
+        data = {
+            'status' : True,
+            'data': "success"
+        }
+        return Response(data)   
+   
+
     
