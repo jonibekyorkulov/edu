@@ -49,6 +49,13 @@ class GroupSerializer(serializers.ModelSerializer):
         for group in a:
             for week in weeks:
                 if week in group.week_id.all():
+                    if time_e >= time_s:
+                        data = {
+                                'status' : False,
+                                'message' : 'These times are equal'
+                            }
+                        raise ValidationError(data)
+
                     if time_s >= group.lesson_start and time_s<=group.lesson_end:
                         data = {
                                 'status' : False,
