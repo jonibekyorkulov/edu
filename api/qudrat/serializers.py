@@ -57,7 +57,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR is wrong"
-                } 
+                }
+
         
     def create(self, validated_data):
         user = super(UserCreateSerializer, self).create(validated_data)

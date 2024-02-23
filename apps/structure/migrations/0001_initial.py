@@ -184,6 +184,7 @@ class Migration(migrations.Migration):
                 ('time', models.TimeField(blank=True, null=True)),
                 ('group', models.ManyToManyField(blank=True, related_name='test_group', to='structure.group')),
 
+
                 ('tester', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teacher_test', to=settings.AUTH_USER_MODEL)),
 
             ],
@@ -216,6 +217,7 @@ class Migration(migrations.Migration):
                 ('status', models.BooleanField(blank=True, default=False, null=True)),
 
                 ('question', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='question_answer', to='structure.testquestion')),
+
 
             ],
             options={
