@@ -56,6 +56,7 @@ class WriteUserApiView(APIView):
         )
         user_file.save()
         df = pd.read_excel(file)
+        error_list = []
         for index, row in df.iterrows():
             passport = row['passport']
             jshir = row['jshir']
@@ -64,38 +65,51 @@ class WriteUserApiView(APIView):
             if not passport_start.isalpha():
                 data = {
                     'status' : False,
-                    'message' : "Your passport isn't starting with alphabetics"
+                    'message' : "Your passport isn't starting with alphabetics",
+                    "error_id" : 'f{row["T/r"]}'
                 }
-                raise ValidationError(data)
+                error_list.append(data)
+                continue
             if len(passport)!=9:
                 data = {
                     'status' : False,
-                    'message' : "Your passport is wrong"
+                    'message' : "Your passport isn't starting with alphabetics",
+                    "error_id" : 'f{row["T/r"]}'
                 }
-                raise ValidationError(data)
+                error_list.append(data)
+                continue
             
             if type(jshir)!=int:
                 data = {
                     'status' : False,
-                    'message' : "Your JSHSHIR isn't in number"
+                    'message' : "Your passport isn't starting with alphabetics",
+                    "error_id" : 'f{row["T/r"]}'
                 }
-                raise ValidationError(data)  
+                error_list.append(data)
+                continue
+              
             if len(str(jshir)) != 14:
                 data = {
                     'status' : False,
-                    'message' : "Your JSHSHIR is wrong"
+                    'message' : "Your passport isn't starting with alphabetics",
+                    "error_id" : 'f{row["T/r"]}'
                 } 
-                raise ValidationError(data)
+                error_list.append(data)
+                continue
             
             if User.objects.filter(username=passport).exists():
                 data = {
                     'status' : False,
-                    'message' : 'This username already exists'
+                    'message' : "Your passport isn't starting with alphabetics",
+                    "error_id" : 'f{row["T/r"]}'
                 }
-                raise ValidationError(data)
+                error_list.append(data)
+                continue
             
             region = row['region']
-            region = RegionModel.objects.filter(uuid = region).first()
+            region = get_object_or_404(RegionModel, name = region)
+            district = row['district']
+            district = get_object_or_404(RegionModel, name = district)
             user = User.objects.create_user(
                 username = passport,
                 first_name = row['first_name'],
@@ -109,7 +123,13 @@ class WriteUserApiView(APIView):
                 address = row['address'],
                 password = passport,
                 region = region,
+                district = district
             )
             user.save()
-        return Response("salom")    
+        data = {
+            'status' : True,
+            'message' : "Your users created succesfully but some users have error",
+            'errors' : error_list
+        }
+        return Response(data)
     
