@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
-from apps.structure.models import Test, TestQuestion, TestAnswer, TestResult
-from .serializers import UploadTestSerializer, TestQuestionSerializer
+from apps.structure.models import Test, TestQuestion, TestAnswer, TestResult, Group
+from .serializers import UploadTestSerializer, TestQuestionSerializer, TestResultSerializer
 # from rest_framework.permissions import AllowAny, IsAuthenticated
 from apps.structure.permission import IsAdmin, IsStudent, IsTeacher
 from rest_framework.response import Response
@@ -19,67 +19,68 @@ class UploadTestApiview(APIView):
     def post(self, request):
         data = request.data
         data['tester'] = request.user.uuid
+        group = Group.objects.get(uuid=request.data.get('group'))
+        if group.teacher_id.uuid != data['tester']:
+            data = {
+                "status": False,
+                "message": "Ushbu guruhga test yuklash vakolati sizda yo'q!!!"
+            }
+            raise ValidationError(data)
         serializer = self.serializer_class(data = request.data)
-        
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+            path = f"{serializer.instance.file.path}"
+            wb_obj = load_workbook(path)
+            sheet_obj = wb_obj.active
+            for i in range(2, 11):
+                Q = f'B{i}'
+                A = f'C{i}'
+                B = f'D{i}'
+                C = f'E{i}'
+                D = f'F{i}'
+
+                test_question = TestQuestion.objects.create(
+                    test = serializer.instance,
+                    question = sheet_obj[Q].value
+
+                )  
+                test_question.save()
+                TestAnswer.objects.create(question = test_question, answer = sheet_obj[A].value, status = True)                # for ans in answers_list:
+                TestAnswer.objects.create(question = test_question, answer = sheet_obj[B].value, status = False)                # for ans in answers_list:
+                TestAnswer.objects.create(question = test_question, answer = sheet_obj[C].value, status = False)                # for ans in answers_list:
+                TestAnswer.objects.create(question = test_question, answer = sheet_obj[D].value, status = False)                # for ans in answers_list:
+                         
+
             data = {
                 "status" : True,
-                "message" : serializer.data,
+                # "message" : serializer.data,
             }
             return Response(data)
+        
+        
 
-
-class StudentGetQuestionsApiView(APIView):
-    permission_classes = (IsTeacher, )
-    serializer_class = TestQuestionSerializer
-    # queryset = Test.objects.all()
-    
-
-    def get(self, request, uuid):
-        object = get_object_or_404(Test, uuid = uuid) 
-        # file = object.
-        # print(object.file.path)
-        path = f"{object.file.path}"
-        # print("aaaaaa",path)
-        wb_obj = load_workbook(path)
-        sheet_obj = wb_obj.active
-        # print(sheet_obj['B2'].value)
-        questions = {}
-        for i in range(2, sheet_obj.max_row + 1):
-            B = f'B{i}'
-            C = f'C{i}'
-            D = f'D{i}'
-            E = f'E{i}'
-            F = f'F{i}'
-            question_data = {
-               f"{i-1}. {sheet_obj[B].value}" : {
-                                                f"A. {sheet_obj[C].value}",                                  
-                                                f"B. {sheet_obj[D].value}",                                  
-                                                f"C. {sheet_obj[E].value}",                                   
-                                                f"D. {sheet_obj[D].value}"                                   
-               } 
-            }
-            questions.update(question_data)
-            # print(data)
- 
-        serializer = self.serializer_class(instance=object)
+class StudentResultApiView(APIView):
+    def post(self, request):
+        test_id = request.data['test_id']
+        test = get_object_or_404(Test, uuid = test_id)
+        test_questions = test.test_question.all()
+        data = request.data.get('data')
+        ca=0
+        ans = []
+        for i in data:
+            question = test_questions.get(uuid=i[0])
+            answer = question.question_answer.get(uuid=i[1])
+            if not answer in ans:
+                ans.append(answer)
+                if answer.status == True:
+                    ca+=1
         data = {
-            "status" : True,
-            "data" : serializer.data,
-            "questioins" : questions
-
+            "student" : request.user.uuid, 
+            "test" : test.uuid,
+            "grade": ca
         }
-        return Response(data)
-    
+        serializer = TestResultSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"data":serializer.data})
 
-        
-        
-    
-
-
-
-class QuestionsApiView(APIView):
-    def get(self, request):
-        pass
-        

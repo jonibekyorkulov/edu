@@ -133,6 +133,9 @@ class Test(BaseModel):
 
     def __str__(self) -> str:
         return f"Teacher: {self.tester.full_name}   {self.create_date}"
+
+
+
         
 
 
@@ -141,7 +144,7 @@ class TestQuestion(BaseModel):
     question = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return f"{self.id}| {self.test} | {self.question}"
+        return f"{self.question}"
         
 
 class TestAnswer(BaseModel):
@@ -150,7 +153,7 @@ class TestAnswer(BaseModel):
     status = models.BooleanField(null=True, blank=True, default=False)
     
     def __str__(self) -> str:
-        return f"{self.id}| {self.question} | {self.answer}"
+        return f"{self.question} | {self.answer}"
         
     
 
@@ -160,7 +163,7 @@ class TestResult(BaseModel):
     grade = models.IntegerField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return f"{self.id}| {self.test} | {self.student}"
+        return f"{self.test} | {self.student}"
     
 
 

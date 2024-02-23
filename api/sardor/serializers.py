@@ -32,4 +32,7 @@ class TestQuestionSerializer(serializers.ModelSerializer):
         fields = "__all__"
         
 
-    
+class TestResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TestResult
+        fields = "__all__"
