@@ -40,9 +40,40 @@ class GroupSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         attrs = super().validate(attrs)
         teacher = attrs['teacher_id']
-        
+        time_s = attrs['lesson_start']
+        time_e = attrs['lesson_end']
+        weeks = attrs['week_id']
+       
 
         a = Group.objects.filter(teacher_id = teacher)
+        for group in a:
+            for week in weeks:
+                if week in group.week_id.all():
+                    if time_s >= group.lesson_start and time_s<=group.lesson_end:
+                        data = {
+                                'status' : False,
+                                'message' : 'These times are equal'
+                            }
+                        raise ValidationError(data)
+                    if time_e >= group.lesson_start and time_e <= group.lesson_end:
+                        data = {
+                                'status' : False,
+                                'message' : 'These times are equal'
+                            }
+                        raise ValidationError(data)
+                    if time_s < group.lesson_start and time_e > group.lesson_end:
+                        data = {
+                                'status' : False,
+                                'message' : 'These times are equal'
+                            }
+                        raise ValidationError(data)
+        data = attrs
+        data['is_active'] = True
+        return data 
+
+                
+
+
         
 
 
