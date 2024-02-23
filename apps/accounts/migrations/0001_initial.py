@@ -1,4 +1,5 @@
 
+
 import django.contrib.auth.models
 import django.contrib.auth.validators
 import django.core.validators
@@ -15,7 +16,9 @@ class Migration(migrations.Migration):
     dependencies = [
         ('auth', '0012_alter_user_first_name_max_length'),
 
+
         ('base', '0002_regionmodel_is_active'),
+
 
 
     operations = [

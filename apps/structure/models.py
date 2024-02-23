@@ -51,7 +51,6 @@ class Group(BaseModel):
         return self.name
 
 
-
 class Lesson(BaseModel):
 
     name = models.CharField(max_length = 255, null=True, blank=True)
