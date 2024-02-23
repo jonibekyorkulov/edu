@@ -23,7 +23,9 @@ class User(BaseModel, AbstractUser):
     ])
 
     birthday = models.DateField(null = True, blank = True)
-    tg_username = models.CharField(max_length = 255)
+
+    tg_username = models.CharField(max_length = 255, null=True, blank=True)
+
 
 
     @property
@@ -49,8 +51,9 @@ class User(BaseModel, AbstractUser):
         
 
     def save(self, *args,**kwargs):
+        
         if not self.password:
-            self.password = self.passport
+            self.password = self.passport  
             self.set_password(self.password)
         
         if not self.username:
@@ -62,3 +65,12 @@ class User(BaseModel, AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+
+class UserFile(BaseModel):
+    file = models.FileField(upload_to='user_file/', null = True, blank=True,  validators=[
+        FileExtensionValidator(allowed_extensions=['xlsx', 'xls', 'csv'])
+        ])
+    
+    def __str__(self) -> str:
+        return f'{self.uuid}'
