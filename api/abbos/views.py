@@ -19,7 +19,6 @@ class TaskCreateApiView(APIView):
     permission_classes = [
         IsTeacher,
     ]
-    queryset = Tasks.objects.all()
     serializer_class = TaskSerializer
 
     def post(self, request):
@@ -59,7 +58,6 @@ class TaskListApiView(APIView):
 
 class AttendanceCreateApiView(APIView):
     permission_classes = (IsTeacher,)
-    queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
 
     def post(self, request):
@@ -93,7 +91,6 @@ class AttendanceCreateApiView(APIView):
 
 class GradeJudgeApiView(APIView):
     permission_classes = (IsTeacher,)
-    queryset = Task_submitions.objects.all()
     serializer_class = GradeSerializer
 
     def put(self, request):
@@ -111,6 +108,9 @@ class GradeJudgeApiView(APIView):
                 serializer.save()
                 data = {"status": True, "message": "Baholandi"}
                 return Response(data=data)
+        else:
+            raise exceptions.ValidationError({"message": "Student yoki Task tori kemadi"})
+
 
 
 class LessonCreateApiView(APIView):
