@@ -17,6 +17,7 @@ class LoginSerializer(TokenObtainPairSerializer):
         password = data.get('password')
         username = data.get('username')
 
+
         user_kwargs = {
             self.username_field: username,
             "password": password
