@@ -4,24 +4,17 @@ from apps.accounts.models import User
 
 
 class TeacherProfilGetSerializers(serializers.ModelSerializer):
-    password = serializers.CharField(required = False)
-    username = serializers.CharField(required = False)
+    
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ('role','first_name', 'last_name', 'middle_name', 'phone_namber','gender','address','region','district','photo','birthday','tg_username')
 
 
-    # def validate(self, data):
-    #     attrs =  super().validate(data)
-
-
-# class TeacherProfilUpdateSerializers(serializers.ModelSerializer):
+class TeacherProfilUpdateSerializers(serializers.ModelSerializer):
     
-#     class Meta:
-#         model = User
-#         fields = ('phone_namber', 'address', 'region', 'district', 'photo','tg_username')
-
-
+    class Meta:
+        model = User
+        fields = ('password','phone_namber', 'address', 'region', 'district', 'photo','tg_username','email')
 
 # class TeacherProfilGetSerializers(serializers):
     # role = serializers.CharField(max_length=255, null=True, blank=True)
