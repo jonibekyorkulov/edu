@@ -12,6 +12,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'uuid',
+            'username',
             'first_name',
             'last_name',
             'middle_name',
@@ -43,6 +44,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
                     'message' : "Your passport is wrong"
                 }
                 raise ValidationError(data)
+            
             return value
         
     def validate_jshir(self, value):

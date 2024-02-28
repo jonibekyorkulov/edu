@@ -12,7 +12,7 @@ class User(BaseModel, AbstractUser):
     last_name=models.CharField(max_length=255, null=True, blank=True)
     middle_name=models.CharField(max_length=255, null=True, blank=True)
     phone_namber=models.CharField(max_length=255, null=True, blank=True)
-    passport = models.CharField(max_length=255, null=True, blank=True)
+    passport = models.CharField(max_length=255, null=True, blank=True, unique = True)
     jshir = models.BigIntegerField(null=True, blank=True)
     gender = models.CharField(max_length=255, null=True, blank=True, choices=Gender.choices())
     address = models.CharField(max_length=255, null=True, blank=True)
