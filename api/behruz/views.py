@@ -1,4 +1,4 @@
-from serializers import StudentTaskSubmittionsSerializer, StudentScheduleSerializer, ContentDownloadSerializer
+from .serializers import StudentTaskSubmittionsSerializer, StudentScheduleSerializer, ContentDownloadSerializer
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from apps.structure.permission import IsStudent,IsTeacher,IsAdmin
