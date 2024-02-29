@@ -61,13 +61,12 @@ class IsTeacher(permissions.BasePermission):
 
 class IsStudent(permissions.BasePermission):
     object_class = None
-    role_method_name = UserRol.STUDENT.value
+    role_method_name = UserRol.STUDENT
 
     def has_permission(self, request, view):
-        if request.user.uuid is None:
-            return False
+          
         user = request.user
-        if user.role == None:
+        if getattr(user, 'role', None) != self.role_method_name:
             return False
         if self.role_method_name.value == user.role:
             try:
