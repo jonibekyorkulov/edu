@@ -45,19 +45,19 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 raise ValidationError(data)
             return value
         
-    def validate_jshir(self, value):
-        if value:
-            if value.isdigit():
-                data = {
-                    'status' : False,
-                    'message' : "Your JSHSHIR isn't in number"
-                }
-                raise ValidationError(data)  
-            if len(value) != 14:
-                data = {
-                    'status' : False,
-                    'message' : "Your JSHSHIR is wrong"
-                }
+    # def validate_jshir(self, value):
+        # if value:
+        #     # if value.isdigit():
+        #     #     data = {
+        #     #         'status' : False,
+        #     #         'message' : "Your JSHSHIR isn't in number"
+        #     #     }
+        #     #     raise ValidationError(data)  
+        #     # if len(value) != 14:
+        #     #     data = {
+        #     #         'status' : False,
+        #     #         'message' : "Your JSHSHIR is wrong"
+        #     #     }
 
         
     def create(self, validated_data):
