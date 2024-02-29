@@ -21,9 +21,14 @@ class User(BaseModel, AbstractUser):
     photo= models.ImageField(upload_to='user/', null=True, blank=True, validators=[
         FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'])
     ])
-
+    
     birthday = models.DateField(null = True, blank = True)
+
+
     tg_username = models.CharField(max_length = 255, null=True, blank=True)
+
+
+
 
 
     @property
@@ -49,9 +54,8 @@ class User(BaseModel, AbstractUser):
         
 
     def save(self, *args,**kwargs):
-        
         if not self.password:
-            self.password = self.passport  
+            self.password = self.passport
             self.set_password(self.password)
         
         if not self.username:
