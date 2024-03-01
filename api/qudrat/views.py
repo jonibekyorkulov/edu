@@ -6,7 +6,7 @@ from .serializers import UserCreateSerializer, UserCreateFileSerializer, Subject
 from rest_framework.generics import CreateAPIView, UpdateAPIView, RetrieveAPIView
 from apps.structure.permission import IsAdmin
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 import pandas as pd
@@ -14,7 +14,7 @@ from rest_framework.exceptions import ValidationError
 
 
 class UserCreateApiView(CreateAPIView):
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [AllowAny, ]
     serializer_class = UserCreateSerializer
 
     queryset = User.objects.all()

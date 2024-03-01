@@ -30,6 +30,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
     
     def validate_passport(self, value):
         if value:
+            if User.objects.filter(passport=value):
+                data = {
+                    'status' : False,
+                    'message' : "Your passport isn't unique"
+                }
+                raise ValidationError(data)
             passport_start = value[:1]
             if not passport_start.isalpha():
                 data = {
