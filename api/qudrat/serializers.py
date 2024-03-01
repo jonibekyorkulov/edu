@@ -2,12 +2,11 @@ from rest_framework import serializers
 from apps.accounts.models import User, UserFile
 from apps.structure.models import Subject
 from rest_framework.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    # password = serializers.CharField(required=False)
-    # username = serializers.CharField(required=False)    
+
+
     class Meta:
         model = User
         fields = (
@@ -27,9 +26,16 @@ class UserCreateSerializer(serializers.ModelSerializer):
             'photo'
         )
         
+
     
     def validate_passport(self, value):
         if value:
+            if User.objects.filter(passport=value):
+                data = {
+                    'status' : False,
+                    'message' : "Your passport isn't unique"
+                }
+                raise ValidationError(data)
             passport_start = value[:1]
             if not passport_start.isalpha():
                 data = {
@@ -47,23 +53,25 @@ class UserCreateSerializer(serializers.ModelSerializer):
         
     def validate_jshir(self, value):
         if value:
-            if type(value)!=int:
+            if value.isdigit():
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR isn't in number"
                 }
                 raise ValidationError(data)  
-            if len(str(value)) != 14:
+            if len(value) != 14:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR is wrong"
-                } 
+                }
+
         
     def create(self, validated_data):
         user = super(UserCreateSerializer, self).create(validated_data)
         user.save()
         return user
     
+
     
 class UserCreateFileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -76,7 +84,6 @@ class SubjectSerializer(serializers.ModelSerializer):
         model = Subject
         fields = '__all__'
     
-    
-    
+ 
    
     

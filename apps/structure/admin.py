@@ -20,7 +20,11 @@ from .models import (
 admin.site.register(Group)
 admin.site.register(Room)
 admin.site.register(Tasks)
-admin.site.register(Task_submitions)
+class TaskSubmitionsAdmin(admin.ModelAdmin):
+    list_display = ['task_id', 'student_id', "grade"]
+    readonly_fields = ["grade"]
+
+admin.site.register(Task_submitions, TaskSubmitionsAdmin)
 admin.site.register(Payment)
 admin.site.register(Lesson)
 admin.site.register(LessonSource)

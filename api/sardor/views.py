@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from apps.structure.models import Test, TestQuestion, TestAnswer, TestResult, Group
 from .serializers import UploadTestSerializer, TestQuestionSerializer, TestResultSerializer
-# from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from apps.structure.permission import IsAdmin, IsStudent, IsTeacher
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -14,7 +14,7 @@ from django.shortcuts import get_object_or_404
 
 class UploadTestApiview(APIView):
     serializer_class = UploadTestSerializer
-    permission_classes = (IsTeacher, ) 
+    permission_classes = (AllowAny, ) 
   
     def post(self, request):
         data = request.data
@@ -60,6 +60,7 @@ class UploadTestApiview(APIView):
         
 
 class StudentResultApiView(APIView):
+    permission_classes = (AllowAny, )
     def post(self, request):
         test_id = request.data['test_id']
         test = get_object_or_404(Test, uuid = test_id)
