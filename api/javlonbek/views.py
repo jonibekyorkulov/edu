@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 class AttendanceView(APIView):
     serializer_class = AttendanceSerializer
-    permission_classes = [IsStudent]
+    permission_classes = [AllowAny]
 
     def get(self, request, uuid):
     
@@ -21,7 +21,7 @@ class AttendanceView(APIView):
 
 class GradeAPIView(APIView):
     serializer_class = GradeSerializers
-    permission_classes = [IsStudent]
+    permission_classes = [AllowAny]
 
     def get(self, request, uuid):
         queryset =Task_submitions.objects.filter(student_id = uuid)
@@ -31,7 +31,7 @@ class GradeAPIView(APIView):
 
 class LessonSourceView(APIView):
     serializer_class = LessonSourceSerializer
-    permission_classes = [IsStudent]
+    permission_classes = [AllowAny]
 
     def get(self,request,  uuid):
         queryset = LessonSource.objects.filter(lesson_id = uuid)
