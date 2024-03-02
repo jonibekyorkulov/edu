@@ -41,7 +41,7 @@ class UserAuthenticationTestCase(TestCase):
 class UserRegistrationTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.register_url = reverse("create_user")  # Replace with your actual registration endpoint
+        self.register_url = reverse("create_user") 
         self.user_data = {
             'passport': 'AC1235874',
             'role': 'teacher',
@@ -50,12 +50,12 @@ class UserRegistrationTestCase(TestCase):
             username='admin',
             password='123'
         )
-        
-
-
+    
+    
     def test_user_registration(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.post(self.register_url, data=self.user_data, format='json')
+        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(User.objects.count(), 2)
         self.assertEqual(User.objects.get(username='AC1235874').username, 'AC1235874')

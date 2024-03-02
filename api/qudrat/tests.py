@@ -163,5 +163,3 @@ class UserCreateTestCase(TestCase):
         self.delete_url = reverse('delete_user')
         response = self.client.delete(self.delete_url, data=self.delete_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)    
-        
-
