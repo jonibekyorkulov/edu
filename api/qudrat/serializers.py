@@ -6,7 +6,6 @@ from rest_framework.exceptions import ValidationError
 
 class UserCreateSerializer(serializers.ModelSerializer):
 
-
     class Meta:
         model = User
         fields = (
@@ -30,20 +29,21 @@ class UserCreateSerializer(serializers.ModelSerializer):
     
     def validate_passport(self, value):
         if value:
-            if User.objects.filter(passport=value):
+            if User.objects.filter(passport=value).exists():
                 data = {
                     'status' : False,
                     'message' : "Your passport isn't unique"
                 }
                 raise ValidationError(data)
             passport_start = value[:1]
+            passport_last = value[2:]
             if not passport_start.isalpha():
                 data = {
                     'status' : False,
                     'message' : "Your passport isn't starting with alphabetics"
                 }
                 raise ValidationError(data)
-            if len(value)!=9:
+            if len(value)!=9 or not passport_last.isdigit():
                 data = {
                     'status' : False,
                     'message' : "Your passport is wrong"
@@ -52,25 +52,25 @@ class UserCreateSerializer(serializers.ModelSerializer):
             return value
         
     def validate_jshir(self, value):
-        if value:
-            if value.isdigit():
-                data = {
-                    'status' : False,
-                    'message' : "Your JSHSHIR isn't in number"
-                }
-                raise ValidationError(data)  
-            if len(value) != 14:
+        if value:              
+            if len(str(value)) != 14:
                 data = {
                     'status' : False,
                     'message' : "Your JSHSHIR is wrong"
                 }
-
-        
-    def create(self, validated_data):
-        user = super(UserCreateSerializer, self).create(validated_data)
-        user.save()
-        return user
-    
+            if User.objects.filter(jshir=value).exists():
+                data = {
+                    'status' : False,
+                    'message' : "Your jshir isn't unique"
+                }
+                raise ValidationError(data)
+            return value
+        else:
+            data = {
+                'status' : False,
+                'message' : "Your JSHSHIR isn't exists"
+            }
+            raise ValidationError(data)
 
     
 class UserCreateFileSerializer(serializers.ModelSerializer):

@@ -28,13 +28,13 @@ class UserUpdateApiView(UpdateAPIView):
     
     
 class UserRetrieveApiView(RetrieveAPIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [AllowAny, ]
     serializer_class = UserCreateSerializer
     queryset = User.objects.all()
     
 
 class UserDeleteApiView(APIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [AllowAny, ]
     serializer_class = UserCreateSerializer
     
     def delete(self, request):
