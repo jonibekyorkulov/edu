@@ -3,9 +3,9 @@ from .views import AttendanceView, GradeAPIView, LessonSourceView
 
 
 urlpatterns = [
-    path('attendance/<uuid:uuid>/', AttendanceView.as_view() , name='attendance_student'), 
-    path('grade/<uuid:uuid>/', GradeAPIView.as_view() , name='grade_student'), 
-    path('lessonsource/<uuid:uuid>/', LessonSourceView.as_view(), name = "lesson_source"),
+    path('attendance/', AttendanceView.as_view() , name = 'attendance-student'), 
+    path('grade/', GradeAPIView.as_view() , name='grade_student'), 
+    path('lessonsource/', LessonSourceView.as_view(), name = "lesson_source"),
 
 
 ]

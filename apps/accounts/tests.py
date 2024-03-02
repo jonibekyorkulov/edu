@@ -1,4 +1,4 @@
-# In your tests.py file
+
 
 from apps.accounts.models import User
 from django.test import TestCase
@@ -70,4 +70,3 @@ class UserRegistrationTestCase(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(User.objects.count(), 2)  # No additional user should be created
->>>>>>> 1560d81836bf328d0052f26fa46f2fd352c9484d

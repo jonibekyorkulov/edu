@@ -12,9 +12,12 @@ class AttendanceView(APIView):
     serializer_class = AttendanceSerializer
     permission_classes = [AllowAny]
 
-    def get(self, request, uuid):
-    
-        queryset = Attendance.objects.filter(student_id = uuid)
+    def get(self, request):
+        # print(self.request.user, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+        # print(request, "uuuuuuuuuuuuuuuuuuuuuuuu")
+
+        queryset = Attendance.objects.filter(student_id = request.user.uuid)
+        # print(queryset, 'xxxxxxxxxxxxxx')
         serilizer_data = self.serializer_class(queryset, many=True)
         return Response(serilizer_data.data)
 
@@ -23,8 +26,8 @@ class GradeAPIView(APIView):
     serializer_class = GradeSerializers
     permission_classes = [AllowAny]
 
-    def get(self, request, uuid):
-        queryset =Task_submitions.objects.filter(student_id = uuid)
+    def get(self, request):
+        queryset =Task_submitions.objects.filter(student_id = request.user.uuid)
         serilizer_data = self.serializer_class(queryset, many = True)
         return Response(serilizer_data.data)
 
@@ -33,7 +36,7 @@ class LessonSourceView(APIView):
     serializer_class = LessonSourceSerializer
     permission_classes = [AllowAny]
 
-    def get(self,request,  uuid):
-        queryset = LessonSource.objects.filter(lesson_id = uuid)
+    def get(self, request):
+        queryset = LessonSource.objects.filter(lesson_id = request.user.uuid)
         serializer_data = self.serializer_class(queryset, many = True)
         return Response(serializer_data.data)
