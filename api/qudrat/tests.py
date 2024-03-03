@@ -5,9 +5,9 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.urls import reverse
 from apps.base.models import RegionModel
-from api.qudrat.serializers import UserCreateSerializer
+from api.qudrat.serializers import UserCreateSerializer, SubjectSerializer
 from datetime import datetime, date
-from apps.structure.models import Group, Room, Subject, Test
+from apps.structure.models import Subject
 
 class UserCreateTestCase(TestCase):
     def setUp(self):
@@ -156,10 +156,112 @@ class UserCreateTestCase(TestCase):
         self.assertEqual(User.objects.all().first().is_active, False)
     
     
-    def test_not_retrieve_user(self):
+    def test_not_delete_user(self):
         self.delete_data = {
             'uuid' : '2a6577de-34b7-4b0d-b927-9efcf16b694a'
         }
         self.delete_url = reverse('delete_user')
         response = self.client.delete(self.delete_url, data=self.delete_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)    
+
+
+
+class SubjectcreateTestCase(TestCase):
+    def setUp(self) -> None:
+        self.client = APIClient()
+        
+        self.user = User.objects.create_user(
+            username='admin',
+            password='123',
+            role = 'admin'
+        )
+        
+        self.subject = Subject.objects.create(
+            name = 'Python',
+            duration = 12
+        )
+        self.subject.save()
+        
+        self.update_data = {
+            'name' : "Frontend",
+            'duration' : 9
+            }
+      
+        
+    def test_create_subject(self):
+        self.create_data = {
+            'name' : "Django",
+            'duration' : 6
+        }
+        self.create_url = reverse('create_subject')
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(self.create_url, data = self.create_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Subject.objects.filter(name='Django').first().name, 'Django')
+        self.assertEqual(Subject.objects.filter(name='Django').first().duration, 6)
+        self.assertEqual(Subject.objects.count(), 2)
+        
+
+    def test_not_create_subject(self):
+        self.create = {
+            'name' : "Python",
+            'duration' : 12
+        }
+        self.create_url = reverse('create_subject')
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(self.create_url, data = self.create, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Subject.objects.count(), 1)
+        
+    
+    def test_update_subject(self):
+        self.client.force_authenticate(user=self.user)        
+        self.url = reverse('update_subject', kwargs={'pk': Subject.objects.get(name='Python').uuid})
+        response = self.client.patch(self.url, data=self.update_data, format = 'json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Subject.objects.filter(name='Frontend').first().name, "Frontend")
+        self.assertEqual(Subject.objects.filter(name='Frontend').first().duration, 9)
+        self.assertEqual(Subject.objects.count(), 1)
+        
+    
+    def test_not_update_subject(self):
+        self.url = reverse('update_subject', kwargs={'pk': '2a6577de-34b7-4b0d-b927-9efcf16b694a'})
+        response = self.client.patch(self.url, data=self.update_data, format = 'json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(Subject.objects.count(), 1)
+        
+    
+    def test_retrieve_subject(self):
+        self.client.force_authenticate(user=self.user)
+        self.uuid = Subject.objects.get(name="Python").uuid
+        self.url = reverse('retrieve_subject', kwargs={'pk': self.uuid})
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['name'], 'Python')
+        self.assertEqual(response.data['duration'], 12)
+    
+    
+    def test_not_retrieve_subject(self):
+        self.url = reverse('retrieve_subject', kwargs={'pk': '2a6577de-34b7-4b0d-b927-9efcf16b694a'})
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
+    
+    def test_delete_subject(self):
+        self.delete_data = {
+            'uuid' : Subject.objects.all().first().uuid
+        }
+        self.client.force_authenticate(user=self.user)        
+        self.delete_url = reverse('delete_subject')
+        response = self.client.delete(self.delete_url, data=self.delete_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Subject.objects.all().first().is_active, False)
+        
+    
+    def test_not_delete_subject(self):
+        self.delete_data = {
+            'uuid' : '2a6577de-34b7-4b0d-b927-9efcf16b694a'
+        }
+        self.delete_url = reverse('delete_subject')
+        response = self.client.delete(self.delete_url, data=self.delete_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
