@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-
+    username = serializers.CharField(max_length = 255, required = False)
     class Meta:
         model = User
         fields = (
@@ -85,7 +85,22 @@ class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
         fields = '__all__'
-    
+       
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        name = attrs['name']
+        duration = attrs['duration']
+        subjects = Subject.objects.filter(name = name)
+        for subject in subjects:
+            if subject.duration == duration:
+                error = {
+                    'status' : False,
+                    'message' : 'This subject already created by this duration'
+                }
+                raise ValidationError(error)
+            else:
+                continue
+        return attrs    
  
    
     
