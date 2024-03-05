@@ -28,13 +28,13 @@ class UserUpdateApiView(UpdateAPIView):
     
     
 class UserRetrieveApiView(RetrieveAPIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [AllowAny, ]
     serializer_class = UserCreateSerializer
     queryset = User.objects.all()
     
 
 class UserDeleteApiView(APIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [AllowAny, ]
     serializer_class = UserCreateSerializer
     
     def delete(self, request):
@@ -139,26 +139,26 @@ class WriteUserApiView(APIView):
    
    
 class SubjectCreateApiView(CreateAPIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [AllowAny, ]
     serializer_class = SubjectSerializer
     queryset = Subject.objects.all()   
    
 
 class SubjectUpdateApiView(UpdateAPIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [AllowAny, ]
     serializer_class = SubjectSerializer
     queryset = Subject.objects.all()
     http_method_names = ['put', 'patch']   
    
 
 class SubjectRetrieveApiView(RetrieveAPIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [AllowAny, ]
     serializer_class = SubjectSerializer
     queryset = Subject.objects.all() 
     
 
 class SubjectDeleteApiView(APIView):
-    permission_classes = [IsAdmin, ]
+    permission_classes = [AllowAny, ]
     serializer_class = SubjectSerializer
     
     def delete(self, request):
