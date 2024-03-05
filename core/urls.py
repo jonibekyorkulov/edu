@@ -47,6 +47,8 @@ urlpatterns = [
     path("abbos/", include('api.abbos.urls')),
     path("abdulaziz/", include('api.abdulaziz.urls')),
     path("aligarx/", include('api.aligarx.urls')),
+    path("aligarx/", include('api.aligarx.urls')),
+    path("behruz/", include('api.behruz.urls')),
     path("bekzod/", include('api.bekzod.urls')),
     path("javlonbek/", include('api.javlonbek.urls')),
     path("mehroj/", include('api.mehroj.urls')),

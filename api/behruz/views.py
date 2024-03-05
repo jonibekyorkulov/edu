@@ -1,5 +1,6 @@
-from serializers import StudentTaskSubmittionsSerializer, StudentScheduleSerializer, ContentDownloadSerializer
+from .serializers import StudentTaskSubmittionsSerializer, StudentScheduleSerializer, ContentDownloadSerializer
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from apps.structure.permission import IsStudent,IsTeacher,IsAdmin
 from rest_framework.response import Response
@@ -26,7 +27,7 @@ class StudentTaskSubmittionView(APIView):
 
 class StudentScheduleView(APIView):
     
-    permission_classes = [IsStudent]
+    permission_classes = [AllowAny]
     serializer_class = StudentScheduleSerializer
     
     def get(self, request):

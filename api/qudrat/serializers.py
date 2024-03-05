@@ -53,6 +53,28 @@ class UserCreateSerializer(serializers.ModelSerializer):
             
             return value
         
+
+    # def validate_jshir(self, value):
+        # if value:
+        #     # if value.isdigit():
+        #     #     data = {
+        #     #         'status' : False,
+        #     #         'message' : "Your JSHSHIR isn't in number"
+        #     #     }
+        #     #     raise ValidationError(data)  
+        #     # if len(value) != 14:
+        #     #     data = {
+        #     #         'status' : False,
+        #     #         'message' : "Your JSHSHIR is wrong"
+        #     #     }
+
+        
+    def create(self, validated_data):
+        user = super(UserCreateSerializer, self).create(validated_data)
+        user.save()
+        return user
+    
+
     def validate_jshir(self, value):
         if value:              
             if len(str(value)) != 14:
@@ -73,6 +95,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 'message' : "Your JSHSHIR isn't exists"
             }
             raise ValidationError(data)
+
 
     
 class UserCreateFileSerializer(serializers.ModelSerializer):
