@@ -8,9 +8,12 @@ from apps.accounts.models import User
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse
 import io
+from rest_framework.permissions import AllowAny
 from reportlab.pdfgen import canvas 
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
+from rest_framework import status
+
 
 def pdf_gen(user, serializer):
     buf = io.BytesIO()
@@ -42,8 +45,9 @@ def pdf_gen(user, serializer):
     return buf
 
 class GetTable(APIView):
-    permission_classes = (IsAdmin, )
-    def get(self, request):
+    permission_classes = (AllowAny, )
+    # permission_classes = (IsAdmin, )
+    def post(self, request):
         uuid = request.data.get('uuid')
         type = request.data.get('type')
         if type == 'group':
@@ -73,11 +77,11 @@ class GetTable(APIView):
                 'data' : serializer.data
             }
             return Response(data)
-        return Response({"status":False})
+        return Response({"status":False}, status=status.HTTP_400_BAD_REQUEST)
 
 class GetPayment(APIView):
-    permission_classes = (IsAdmin, )
-    def get(self, request):
+    permission_classes = (AllowAny, )
+    def post(self, request):
         uuid = request.data.get('uuid')
         student = get_object_or_404(User, uuid=uuid)
         if student.role != 'student':
@@ -93,11 +97,11 @@ class GetPayment(APIView):
         return FileResponse(pdf_gen(student, serializer), as_attachment=True, filename="shartnoma.pdf")
 
 class GetAttendance(ListAPIView):
-    permission_classes = (IsAdmin, )
+    permission_classes = (AllowAny, )
     serializer_class = AttendanceSerializer
 
     def get_queryset(self):
-        group = get_object_or_404(Group, uuid=self.request.data.get('uuid'))
+        group = get_object_or_404(Group, uuid=self.kwargs.get('uuid'))
         students = group.student_id.all()
         queryset = []
         for student in students:
@@ -105,15 +109,15 @@ class GetAttendance(ListAPIView):
         return queryset
 
 class UpdateAttendance(UpdateAPIView):
-    permission_classes = (IsAdmin, )
+    lookup_field = 'uuid'
+    permission_classes = (AllowAny, )
     serializer_class = AttendanceSerializer
     queryset = Attendance.objects.all()
 
 class GetStudentAttendance(ListAPIView):
-    permission_classes = (IsAdmin, )
+    permission_classes = (AllowAny, )
     serializer_class = AttendanceSerializer
     def get_queryset(self):
-        student = self.request.data['uuid']
-        student = get_object_or_404(User, uuid=student)
+        student = get_object_or_404(User, uuid=self.kwargs.get('uuid'))
         queryset = Attendance.objects.filter(student_id = student)
         return queryset
