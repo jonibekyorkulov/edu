@@ -21,9 +21,14 @@ class User(BaseModel, AbstractUser):
     photo= models.ImageField(upload_to='user/', null=True, blank=True, validators=[
         FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'])
     ])
-
+    
     birthday = models.DateField(null = True, blank = True)
-    tg_username = models.CharField(max_length = 255)
+
+
+    tg_username = models.CharField(max_length = 255, null=True, blank=True)
+
+
+
 
 
     @property
@@ -62,3 +67,12 @@ class User(BaseModel, AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+
+class UserFile(BaseModel):
+    file = models.FileField(upload_to='user_file/', null = True, blank=True,  validators=[
+        FileExtensionValidator(allowed_extensions=['xlsx', 'xls', 'csv'])
+        ])
+    
+    def __str__(self) -> str:
+        return f'{self.uuid}'

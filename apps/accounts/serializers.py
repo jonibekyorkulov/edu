@@ -16,15 +16,12 @@ class LoginSerializer(TokenObtainPairSerializer):
     def auth_validate(self, data):
         password = data.get('password')
         username = data.get('username')
-        # print(f"{username}\n{password}")
-        
+
 
         user_kwargs = {
             self.username_field: username,
             "password": password
         }
-
-
 
         user = authenticate(**user_kwargs)
         if user is not None:
