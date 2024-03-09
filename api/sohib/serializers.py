@@ -18,6 +18,8 @@ class AttendanceSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField("get_username")
     user_full_name = serializers.SerializerMethodField("get_user_full_name")
     lesson = serializers.SerializerMethodField("get_lesson")
+    student_id = serializers.CharField(required= False)
+    lesson_id = serializers.CharField(required= False)
 
     class Meta:
         model = Attendance
