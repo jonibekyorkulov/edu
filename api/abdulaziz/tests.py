@@ -104,8 +104,8 @@ class TestGrade(TestCase):
         print(response.data,'kkkkkkkkkk')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # def test_lesson_source(self):
-    #     url = reverse('lesson-source')
-    #     self.client.force_authenticate(user = self.user)
-    #     response = self.client.get(url)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_lesson_source(self):
+        url = reverse('lesson-source')
+        self.client.force_authenticate(user = self.user)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
